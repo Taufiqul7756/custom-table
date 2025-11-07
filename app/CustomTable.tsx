@@ -256,7 +256,7 @@ export function CustomTable({ columns, initialData = [] }: CustomTableProps) {
           onClick={addNewRow}
           className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors shadow-sm"
         >
-          + Add New Row
+          + Add Row
         </button>
       </div>
     </div>
