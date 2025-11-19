@@ -68,8 +68,12 @@ export default function Home() {
 
       {/* Dynamically render all sheets */}
       {Object.entries(tableData.sheets).map(([sheetName, sheetData]) => {
-        // Skip empty sheets
+        // Skip empty sheets or sheets without required properties
         if (
+          !sheetData ||
+          typeof sheetData !== "object" ||
+          !("columns" in sheetData) ||
+          !("rows" in sheetData) ||
           !sheetData.columns ||
           !sheetData.rows ||
           sheetData.rows.length === 0
@@ -77,22 +81,22 @@ export default function Home() {
           return null;
         }
 
-        // Create columns array
+        // Now TypeScript knows sheetData has columns and rows
         const columns = [
           { key: "Del", label: "" },
           { key: "#", label: "SL" },
-          ...sheetData.columns.map((col: string) => ({
+          ...(sheetData.columns as string[]).map((col: string) => ({
             key: col,
             label: col,
           })),
         ];
 
-        // Create initial data with IDs
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const initialData = sheetData.rows.map((row: any, index: number) => ({
-          id: index + 1,
-          ...row,
-        }));
+        const initialData = (sheetData.rows as Record<string, unknown>[]).map(
+          (row: Record<string, unknown>, index: number) => ({
+            id: index + 1,
+            ...row,
+          })
+        );
 
         return (
           <CustomTable
