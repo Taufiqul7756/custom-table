@@ -119,13 +119,13 @@ export function CustomTable({ columns, initialData = [] }: CustomTableProps) {
     <div className="w-full overflow-x-auto rounded-lg shadow-sm border border-gray-200">
       <table className="min-w-full border-collapse">
         <thead>
-          <tr className="bg-gradient-to-r from-gray-50 to-gray-100">
+          <tr className="bg-linear-to-r from-gray-50 to-gray-100">
             {columns.map((column) => {
               if (column.key === "Del") {
                 return (
                   <th
                     key={column.key}
-                    className="border-b-2 border-gray-200 px-4 py-3 text-center text-sm font-semibold text-gray-700 tracking-wider w-16"
+                    className="border-b-2 border-r border-gray-200 px-2 py-3 text-center text-sm font-semibold text-gray-700 tracking-wider w-12"
                   >
                     {column.label}
                   </th>
@@ -135,7 +135,7 @@ export function CustomTable({ columns, initialData = [] }: CustomTableProps) {
                 return (
                   <th
                     key={column.key}
-                    className="border-b-2 border-gray-200 px-4 py-3 text-center text-sm font-semibold text-gray-700 tracking-wider w-16"
+                    className="border-b-2 border-r border-gray-200 px-4 py-3 text-center text-sm font-semibold text-gray-700 tracking-wider w-16"
                   >
                     {column.label}
                   </th>
@@ -144,7 +144,7 @@ export function CustomTable({ columns, initialData = [] }: CustomTableProps) {
               return (
                 <th
                   key={column.key}
-                  className="border-b-2 border-gray-200 px-6 py-3 text-left text-sm font-semibold text-gray-700 tracking-wider"
+                  className="border-b-2 border-r border-gray-200 px-6 py-3 text-left text-sm font-semibold text-gray-700 tracking-wider last:border-r-0"
                 >
                   {column.label}
                 </th>
@@ -161,15 +161,18 @@ export function CustomTable({ columns, initialData = [] }: CustomTableProps) {
               {columns.map((column) => {
                 if (column.key === "Del") {
                   return (
-                    <td key={column.key} className="px-4 py-3 text-center">
+                    <td
+                      key={column.key}
+                      className="px-2 py-3 text-center border-r border-gray-200"
+                    >
                       <button
                         onClick={() => deleteRow(rowIndex)}
                         className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded transition-colors"
                         title="Delete row"
                       >
                         <svg
-                          width="24"
-                          height="24"
+                          width="20"
+                          height="20"
                           viewBox="0 0 24 24"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -190,7 +193,7 @@ export function CustomTable({ columns, initialData = [] }: CustomTableProps) {
                   return (
                     <td
                       key={column.key}
-                      className="px-4 py-3 text-sm text-gray-600 text-center font-medium"
+                      className="px-4 py-3 text-sm text-gray-600 text-center font-medium border-r border-gray-200"
                     >
                       {row.id || rowIndex + 1}
                     </td>
@@ -199,7 +202,7 @@ export function CustomTable({ columns, initialData = [] }: CustomTableProps) {
                 return (
                   <td
                     key={column.key}
-                    className="px-6 py-3 text-sm text-gray-900"
+                    className="px-6 py-3 text-sm text-gray-900 border-r border-gray-200 last:border-r-0"
                     style={{ width: "200px", maxWidth: "200px" }}
                     onClick={() =>
                       editingCell?.rowIndex !== rowIndex ||
