@@ -1,45 +1,120 @@
+// Import JSON data
+
+"use client";
+
+import { useState } from "react";
+import tableData from "../table.json";
 import { CustomTable } from "./CustomTable";
 
-export default function Home() {
-  const columns = [
-    { key: "Del", label: "" },
-    { key: "#", label: "SL" },
-    { key: "firstName", label: "First Name" },
-    { key: "lastName", label: "Last Name" },
-    { key: "email", label: "Email" },
-    { key: "phone", label: "Phone" },
-    { key: "role", label: "Role" },
-    { key: "address", label: "Address" },
-    { key: "address2", label: "Address2" },
-  ];
+interface RowData {
+  id?: number;
+  [key: string]: string | number | undefined;
+}
 
-  const initialData = [
-    {
-      id: 1,
-      firstName: "Taufiqul",
-      lastName: "Islam",
-      email: "taufiqul@example.com",
-      phone: "123-456-7890",
-      role: "Developer",
-      address: "123 Main St",
-      address2: "Apt 4B",
-    },
-    {
-      id: 2,
-      firstName: "Afatuddin",
-      lastName: "Shaon",
-      email: "afatuddin@example.com",
-      phone: "098-765-4321",
-      role: "Designer",
-      address: "456 Elm St",
-      address2: "Suite 5A",
-    },
-  ];
+export default function Home() {
+  const [savedJson, setSavedJson] = useState<Record<string, unknown> | null>(
+    null
+  );
+
+  const handleSave = (data: RowData[], title: string) => {
+    const columns = Object.keys(data[0] || {}).filter(
+      (key) => key !== "id" && key !== "Del" && key !== "#"
+    );
+    const rows = data.map((row) => {
+      const newRow: Record<string, unknown> = {};
+      columns.forEach((col) => {
+        newRow[col] = row[col];
+      });
+      return newRow;
+    });
+
+    const result = {
+      [title]: {
+        columns,
+        rows,
+      },
+    };
+
+    setSavedJson(result);
+    console.log("Saved JSON:", result);
+  };
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Editable Table</h1>
-      <CustomTable columns={columns} initialData={initialData} />
+      <h1 className="text-2xl font-bold mb-6 text-gray-800">Editable Tables</h1>
+      {/* Invoice Details */}
+      <div className="mb-6 p-4 bg-white rounded-lg shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-700 mb-2">
+          Invoice Details
+        </h2>
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <span className="font-medium">RV:</span> {tableData.meta.RV}
+          </div>
+          <div>
+            <span className="font-medium">Invoice Date:</span>{" "}
+            {tableData.meta["Invoice Date"]}
+          </div>
+          <div>
+            <span className="font-medium">Kundennummer:</span>{" "}
+            {tableData.meta.Kundennummer}
+          </div>
+          <div>
+            <span className="font-medium">Firmenname:</span>{" "}
+            {tableData.meta["RE/Firmenname"]}
+          </div>
+        </div>
+      </div>
+
+      {/* Dynamically render all sheets */}
+      {Object.entries(tableData.sheets).map(([sheetName, sheetData]) => {
+        // Skip empty sheets
+        if (
+          !sheetData.columns ||
+          !sheetData.rows ||
+          sheetData.rows.length === 0
+        ) {
+          return null;
+        }
+
+        // Create columns array
+        const columns = [
+          { key: "Del", label: "" },
+          { key: "#", label: "SL" },
+          ...sheetData.columns.map((col: string) => ({
+            key: col,
+            label: col,
+          })),
+        ];
+
+        // Create initial data with IDs
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const initialData = sheetData.rows.map((row: any, index: number) => ({
+          id: index + 1,
+          ...row,
+        }));
+
+        return (
+          <CustomTable
+            key={sheetName}
+            title={sheetName}
+            columns={columns}
+            initialData={initialData}
+            onSave={handleSave}
+          />
+        );
+      })}
+      {/* Display saved JSON */}
+      {savedJson && (
+        <div className="mt-8 p-4 bg-white rounded-lg shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-700 mb-2">
+            Saved JSON
+          </h2>
+          <pre className="text-sm bg-gray-100 p-4 rounded overflow-x-auto">
+            {JSON.stringify(savedJson, null, 2)}
+          </pre>
+        </div>
+      )}
     </div>
   );
 }

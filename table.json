@@ -28,7 +28,7 @@
           "Aktivierungsdatum": "06.04.2023",
           "Nächstmögliches Vertragsende": "05.04.2025",
           "Potenzielles Optimierungsdatum": "05.04.2025",
-          "Restmonate": 0,
+          "Restmonate": 15,
           "Tarif": "Business Mobil S (3. Generation)"
         },
         {
@@ -37,12 +37,72 @@
           "Aktivierungsdatum": "06.04.2023",
           "Nächstmögliches Vertragsende": "05.04.2025",
           "Potenzielles Optimierungsdatum": "05.04.2025",
-          "Restmonate": 0,
+          "Restmonate": 15,
           "Tarif": "Business Mobil S (3. Generation)"
         }
       ]
     },
-    "übersicht": {},
-    "laufzeitenanalyse": {}
+    "übersicht": {
+      "columns": [
+        "RV",
+        "Rufnummer",
+        "Aktivierungsdatum",
+        "Nächstmögliches Vertragsende",
+        "Potenzielles Optimierungsdatum",
+        "Restmonate",
+        "Tarif"
+      ],
+      "rows": [
+        {
+          "RV": "NBM05",
+          "Rufnummer": 1637981136,
+          "Aktivierungsdatum": "06.04.2023",
+          "Nächstmögliches Vertragsende": "05.04.2025",
+          "Potenzielles Optimierungsdatum": "05.04.2025",
+          "Restmonate": 15,
+          "Tarif": "Business Mobil S (3. Generation)"
+        },
+        {
+          "RV": "NBM05",
+          "Rufnummer": 1637981138,
+          "Aktivierungsdatum": "06.04.2023",
+          "Nächstmögliches Vertragsende": "05.04.2025",
+          "Potenzielles Optimierungsdatum": "05.04.2025",
+          "Restmonate": 15,
+          "Tarif": "Business Mobil S (3. Generation)"
+        }
+      ]
+    },
+    "laufzeitenanalyse": {
+      "columns": [
+        "RV",
+        "Rufnummer",
+        "Aktivierungsdatum",
+        "Nächstmögliches Vertragsende",
+        "Potenzielles Optimierungsdatum",
+        "Restmonate",
+        "Tarif"
+      ],
+      "rows": [
+        {
+          "RV": "NBM05",
+          "Rufnummer": 1637981136,
+          "Aktivierungsdatum": "06.04.2023",
+          "Nächstmögliches Vertragsende": "05.04.2025",
+          "Potenzielles Optimierungsdatum": "05.04.2025",
+          "Restmonate": 15,
+          "Tarif": "Business Mobil S (3. Generation)"
+        },
+        {
+          "RV": "NBM05",
+          "Rufnummer": 1637981138,
+          "Aktivierungsdatum": "06.04.2023",
+          "Nächstmögliches Vertragsende": "05.04.2025",
+          "Potenzielles Optimierungsdatum": "05.04.2025",
+          "Restmonate": 15,
+          "Tarif": "Business Mobil S (3. Generation)"
+        }
+      ]
+    }
   }
 }
