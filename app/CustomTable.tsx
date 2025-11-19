@@ -261,8 +261,8 @@ export function CustomTable({
                       >
                         {editingCell?.rowIndex === rowIndex &&
                         editingCell?.columnKey === column.key
-                          ? row[column.key] || ""
-                          : row[column.key] || (
+                          ? row[column.key] ?? ""
+                          : row[column.key] ?? (
                               <span className="text-gray-400">
                                 Click to edit
                               </span>
