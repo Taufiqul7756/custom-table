@@ -1,78 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-
-// Import your types
-interface MetaData {
-  [key: string]: any;
-}
-
-interface Ist {
-  rows: Array<Record<string, any>>;
-  columns: string[];
-}
-
-interface Uebersicht {
-  rows: Array<Record<string, any>>;
-  columns: string[];
-}
-
-interface InvoiceFile {
-  id: number;
-  file: string;
-  meta_data: MetaData;
-  ist: Ist;
-  uebersicht: Uebersicht;
-  task_id: string;
-  task_status: string;
-  task_error: string | null;
-  created_at: string;
-  invoice_date: string | null;
-  invoice_month: string | null;
-}
-
-interface Company {
-  id: number;
-  name: string;
-  contact_person_name: string;
-  email: string;
-  phone_number: string;
-  number_of_employees: number;
-  industry: string;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-}
-
-interface Assignee {
-  id: number;
-  email: string;
-  fullname: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-  company: Company;
-  company_id: number;
-  phone_number: string;
-  is_active: boolean;
-  two_fa_enabled: boolean;
-  is_staff: boolean;
-}
-
-export interface TableDataApiResponse {
-  id: number;
-  name: string;
-  description: string;
-  company: Company;
-  assignee: Assignee | null;
-  created_at: string;
-  total_duration_in_days: number;
-  stage_display: string;
-  stage: string;
-  error_log: string;
-  invoice_files: InvoiceFile[];
-}
 
 interface Column {
   key: string;
@@ -88,21 +16,13 @@ interface CustomTableProps {
   columns: Column[];
   initialData?: RowData[];
   title?: string;
-  tableType: "ist" | "uebersicht";
-  invoiceIndex: number;
-  onSave?: (
-    data: RowData[],
-    tableType: "ist" | "uebersicht",
-    invoiceIndex: number
-  ) => void;
+  onSave?: (data: RowData[], title: string) => void;
 }
 
 export function CustomTable({
   columns,
   initialData = [],
   title,
-  tableType,
-  invoiceIndex,
   onSave,
 }: CustomTableProps) {
   const [data, setData] = useState<RowData[]>(initialData);
@@ -204,7 +124,7 @@ export function CustomTable({
 
   const handleSave = () => {
     if (onSave) {
-      onSave(data, tableType, invoiceIndex);
+      onSave(data, title || "");
     }
   };
 
@@ -366,7 +286,7 @@ export function CustomTable({
             onClick={handleSave}
             className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors shadow-sm"
           >
-            Save {tableType.toUpperCase()}
+            Save
           </button>
         </div>
       </div>
