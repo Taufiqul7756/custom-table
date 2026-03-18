@@ -16,7 +16,6 @@ interface InvoiceFile {
 }
 
 export interface TableDataApiResponse {
-  id: number;
   invoice_files: InvoiceFile[];
 }
 
