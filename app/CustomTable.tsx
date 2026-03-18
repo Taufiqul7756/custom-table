@@ -5,18 +5,13 @@ import { useState, useRef, useEffect } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-interface Ist {
-  rows: Array<Record<string, any>>;
+export interface TableSchema {
   columns: string[];
-}
-
-interface InvoiceFile {
-  id: number;
-  ist: Ist;
+  rows: Array<Record<string, any>>;
 }
 
 export interface TableDataApiResponse {
-  invoice_files: InvoiceFile[];
+  table_data: Record<string, TableSchema>;
 }
 
 interface Column {
@@ -34,13 +29,8 @@ interface CustomTableProps {
   columns: Column[];
   initialData?: RowData[];
   title?: string;
-  tableType: "ist" | "uebersicht";
-  invoiceIndex: number;
-  onSave?: (
-    data: RowData[],
-    tableType: "ist" | "uebersicht",
-    invoiceIndex: number,
-  ) => void;
+  tableType: string;
+  onSave?: (data: RowData[], tableType: string) => void;
   isReadOnly?: boolean;
 }
 
@@ -158,7 +148,6 @@ export function IstTable({
   columns,
   initialData = [],
   tableType,
-  invoiceIndex,
   onSave,
   isReadOnly = false,
 }: CustomTableProps) {
@@ -284,7 +273,7 @@ export function IstTable({
       const newData = [...data];
       newData[editingCell.rowIndex][editingCell.columnKey] = editValue;
       setData(newData);
-      debouncedSave(() => onSave?.(newData, tableType, invoiceIndex));
+      debouncedSave(() => onSave?.(newData, tableType));
     }
   };
 
@@ -360,7 +349,7 @@ export function IstTable({
     const newData = data.filter((_, i) => i !== rowIndex);
     setData(newData);
     setEditingCell(null);
-    onSave?.(newData, tableType, invoiceIndex);
+    onSave?.(newData, tableType);
   };
 
   const togglePinColumn = (columnKey: string) => {
