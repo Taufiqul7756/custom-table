@@ -120,6 +120,19 @@ export default function Home() {
 
   const tableEntries = Object.entries(activeData.table_data);
 
+  const showJsonButton = (
+    <button
+      onClick={() => setShowJson((prev) => !prev)}
+      className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold rounded-2xl cursor-pointer transition-colors"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+      {showJson ? "Hide JSON" : "Show Updated JSON"}
+    </button>
+  );
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* ── Top Bar ── */}
@@ -152,7 +165,7 @@ export default function Home() {
           {isCustom && (
             <button
               onClick={handleReset}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
             >
               <svg
                 width="14"
@@ -173,7 +186,7 @@ export default function Home() {
               setPanelOpen((p) => !p);
               setError(null);
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold rounded-lg cursor-pointer transition-colors"
           >
             <svg
               width="15"
@@ -209,7 +222,7 @@ export default function Home() {
               </div>
               <button
                 onClick={() => setPanelOpen(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+                className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer p-1"
               >
                 <svg
                   width="18"
@@ -268,7 +281,7 @@ export default function Home() {
                 <div className="flex gap-2 mt-1">
                   <button
                     onClick={handleLoadJson}
-                    className="flex-1 py-2.5 bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold rounded-lg transition-colors"
+                    className="flex-1 py-2.5 bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold rounded-lg cursor-pointer transition-colors"
                   >
                     Load &amp; Render Tables
                   </button>
@@ -277,7 +290,7 @@ export default function Home() {
                       setInputText("");
                       setError(null);
                     }}
-                    className="px-4 py-2.5 border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium rounded-lg transition-colors"
+                    className="px-4 py-2.5 border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium rounded-lg cursor-pointer transition-colors"
                   >
                     Clear
                   </button>
@@ -299,7 +312,7 @@ export default function Home() {
                       setError(null);
                       textareaRef.current?.focus();
                     }}
-                    className="absolute top-2 right-2 px-2 py-1 text-xs bg-white border border-gray-200 hover:bg-gray-100 text-gray-600 rounded transition-colors"
+                    className="absolute top-2 right-2 px-2 py-1 text-xs bg-white border border-gray-200 hover:bg-gray-100 text-gray-600 rounded cursor-pointer transition-colors"
                   >
                     Use as template
                   </button>
@@ -334,56 +347,30 @@ export default function Home() {
         </div>
 
         {/* Tables */}
-        {tableEntries.map(
-          ([tableKey, tableSchema]) =>
-            tableSchema.rows.length > 0 && (
-              <div key={tableKey} className="mb-10">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-semibold uppercase tracking-widest text-gray-400">
-                    {tableKey}
-                  </span>
-                </div>
-                <CustomTable
-                  tableType={tableKey}
-                  columns={[
-                    { key: "Del", label: "" },
-                    { key: "#", label: "SL" },
-                    ...tableSchema.columns.map((col) => ({
-                      key: col,
-                      label: col,
-                    })),
-                  ]}
-                  initialData={tableSchema.rows.map((row, index) => ({
-                    id: index + 1,
-                    ...row,
-                  }))}
-                  onSave={handleSave}
-                />
+        {tableEntries.map(([tableKey, tableSchema], idx) =>
+          tableSchema.rows.length > 0 ? (
+            <div key={tableKey} className="mb-10">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs font-semibold uppercase tracking-widest text-gray-400">
+                  {tableKey}
+                </span>
               </div>
-            ),
-        )}
-
-        {/* Show JSON button */}
-        {savedJson && (
-          <div className="mt-4 flex justify-end">
-            <button
-              onClick={() => setShowJson((prev) => !prev)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold rounded-lg transition-colors"
-            >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <polyline points="16 18 22 12 16 6" />
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-              {showJson ? "Hide JSON" : "Show Updated JSON"}
-            </button>
-          </div>
+              <CustomTable
+                tableType={tableKey}
+                columns={[
+                  { key: "Del", label: "" },
+                  { key: "#", label: "SL" },
+                  ...tableSchema.columns.map((col) => ({ key: col, label: col })),
+                ]}
+                initialData={tableSchema.rows.map((row, index) => ({
+                  id: index + 1,
+                  ...row,
+                }))}
+                onSave={handleSave}
+                footerRight={idx === tableEntries.length - 1 ? showJsonButton : undefined}
+              />
+            </div>
+          ) : null,
         )}
 
         {/* JSON output */}
@@ -414,7 +401,7 @@ export default function Home() {
                       JSON.stringify(savedJson, null, 2),
                     )
                   }
-                  className="text-xs px-3 py-1.5 border border-gray-200 hover:bg-gray-100 text-gray-600 rounded-md font-medium transition-colors"
+                  className="text-xs px-3 py-1.5 border border-gray-200 hover:bg-gray-100 text-gray-600 rounded-md font-medium cursor-pointer transition-colors"
                 >
                   Copy
                 </button>
@@ -423,7 +410,7 @@ export default function Home() {
                     setSavedJson(null);
                     setShowJson(false);
                   }}
-                  className="text-xs px-3 py-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 border border-red-200 rounded-md font-medium transition-colors"
+                  className="text-xs px-3 py-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 border border-red-200 rounded-md font-medium cursor-pointer transition-colors"
                 >
                   Clear
                 </button>

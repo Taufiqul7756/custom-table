@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -32,6 +32,7 @@ interface CustomTableProps {
   tableType: string;
   onSave?: (data: RowData[], tableType: string) => void;
   isReadOnly?: boolean;
+  footerRight?: ReactNode;
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -132,6 +133,7 @@ export function IstTable({
   tableType,
   onSave,
   isReadOnly = false,
+  footerRight,
 }: CustomTableProps) {
   const [data, setData] = useState<RowData[]>(initialData);
   const [pinnedColumns, setPinnedColumns] = useState<Set<string>>(
@@ -574,18 +576,19 @@ export function IstTable({
         </div>
 
         {/* Footer bar */}
-        <div className="flex justify-end items-center px-3 bg-gray-50 border-t border-gray-200">
-          {!isReadOnly && (
-            <div className="px-6 py-4 flex justify-end gap-5">
-              <button
-                onClick={addNewRow}
-                className="h-10 px-4 text-sm font-semibold flex items-center gap-2 cursor-pointer bg-gray-800 hover:bg-gray-700 rounded-2xl text-white transition-colors"
-              >
-                <PlusIcon />
-                Add Row
-              </button>
-            </div>
+        <div className="flex justify-between items-center px-6 py-4 bg-gray-50 border-t border-gray-200">
+          {!isReadOnly ? (
+            <button
+              onClick={addNewRow}
+              className="h-10 px-4 text-sm font-semibold flex items-center gap-2 cursor-pointer bg-gray-800 hover:bg-gray-700 rounded-2xl text-white transition-colors"
+            >
+              <PlusIcon />
+              Add Row
+            </button>
+          ) : (
+            <span />
           )}
+          {footerRight ?? <span />}
         </div>
       </div>
     </div>
