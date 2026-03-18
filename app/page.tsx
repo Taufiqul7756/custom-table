@@ -13,6 +13,7 @@ export default function Home() {
   const [savedJson, setSavedJson] = useState<Record<string, unknown> | null>(
     null,
   );
+  const [showJson, setShowJson] = useState(false);
 
   const typedTableData = tableData as TableDataApiResponse;
 
@@ -79,15 +80,30 @@ export default function Home() {
         </div>
       ))}
 
-      {/* Display saved JSON */}
+      {/* Show JSON button */}
       {savedJson && (
-        <div className="mt-8 p-4 bg-white rounded-lg shadow-md">
+        <div className="mt-4 flex justify-end">
+          <button
+            onClick={() => setShowJson((prev) => !prev)}
+            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm font-semibold rounded-2xl transition-colors"
+          >
+            {showJson ? "Hide JSON" : "Show Updated JSON"}
+          </button>
+        </div>
+      )}
+
+      {/* Display saved JSON */}
+      {savedJson && showJson && (
+        <div className="mt-4 p-4 bg-white rounded-lg shadow-md">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold text-gray-700">
               Saved Table Response
             </h2>
             <button
-              onClick={() => setSavedJson(null)}
+              onClick={() => {
+                setSavedJson(null);
+                setShowJson(false);
+              }}
               className="text-sm text-red-600 hover:text-red-700 font-medium"
             >
               Clear
