@@ -59,24 +59,6 @@ function PlusIcon() {
   );
 }
 
-function ArrowRightIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="5" y1="12" x2="19" y2="12" />
-      <polyline points="12 5 19 12 12 19" />
-    </svg>
-  );
-}
-
 function PinIcon({ pinned }: { pinned: boolean }) {
   return (
     <svg
@@ -396,7 +378,7 @@ export function IstTable({
   return (
     <div
       className="mb-8 flex flex-col"
-      style={{ height: "calc(98vh - 200px)" }}
+      style={{ height: "calc(88vh - 200px)" }}
     >
       <div className="flex-1 flex flex-col overflow-hidden rounded-lg rounded-t-none border-2 border-gray-200">
         <div
