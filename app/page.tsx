@@ -325,7 +325,7 @@ export default function Home() {
           <span className="text-xs text-gray-400 font-medium">
             {isCustom
               ? "Showing custom JSON data"
-              : "Showing sample data (new.json)"}
+              : "Showing sample data (default.json)"}
           </span>
           <span className="w-1 h-1 rounded-full bg-gray-300" />
           <span className="text-xs text-gray-400">
