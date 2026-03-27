@@ -53,6 +53,7 @@ export default function Home() {
     useState<TableDataApiResponse>(defaultData);
   const [isCustom, setIsCustom] = useState(false);
 
+  const [loadKey, setLoadKey] = useState(0);
   const [panelOpen, setPanelOpen] = useState(false);
   const [inputText, setInputText] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -87,6 +88,7 @@ export default function Home() {
     setIsCustom(true);
     setSavedJson(null);
     setShowJson(false);
+    setLoadKey((k) => k + 1);
   };
 
   const handleReset = () => {
@@ -97,6 +99,7 @@ export default function Home() {
     setInputText("");
     setError(null);
     setPanelOpen(false);
+    setLoadKey((k) => k + 1);
   };
 
   const handleSave = (data: RowData[], tableType: string) => {
@@ -383,6 +386,7 @@ export default function Home() {
                 </span>
               </div>
               <CustomTable
+                key={`${tableKey}-${loadKey}`}
                 tableType={tableKey}
                 columns={[
                   { key: "Del", label: "" },

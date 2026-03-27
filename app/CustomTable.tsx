@@ -174,10 +174,6 @@ export function CustomTable({
     setShowScrollTooltip(false);
   };
 
-  // Sync when initialData changes (e.g. switching invoices)
-  useEffect(() => {
-    setData(initialData);
-  }, [initialData]);
 
   // Calculate column widths based on content
   const calculateWidths = () => {
@@ -534,7 +530,7 @@ export function CustomTable({
                           style={getColumnStyle(column.key, columnIndex)}
                           className="px-0 py-1 text-sm text-gray-600 text-center font-medium border-r border-gray-200 bg-white"
                         >
-                          {row.id || rowIndex + 1}
+                          {rowIndex + 1}
                         </td>
                       );
                     }
