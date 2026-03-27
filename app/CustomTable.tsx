@@ -634,7 +634,7 @@ export function CustomTable({
           {!isReadOnly ? (
             <button
               onClick={addNewRow}
-              className="h-10 px-4 text-sm font-semibold flex items-center gap-2 cursor-pointer bg-gray-800 hover:bg-gray-700 rounded-2xl text-white transition-colors"
+              className="h-10 px-4 text-sm font-semibold flex items-center gap-2 cursor-pointer bg-gray-800 hover:bg-gray-700 rounded-lg text-white transition-colors"
             >
               <PlusIcon />
               Add Row
