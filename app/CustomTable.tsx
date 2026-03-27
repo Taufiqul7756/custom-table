@@ -127,7 +127,7 @@ function debounce<T extends (...args: any[]) => void>(fn: T, ms: number): T {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function IstTable({
+export function CustomTable({
   columns,
   initialData = [],
   tableType,
@@ -439,7 +439,10 @@ export function IstTable({
           className="flex-1 overflow-auto relative"
           style={{ minWidth: "100%" }}
         >
-          <table className="border-collapse" style={{ tableLayout: "fixed", minWidth: "100%" }}>
+          <table
+            className="border-collapse"
+            style={{ tableLayout: "fixed", minWidth: "100%" }}
+          >
             <thead className="sticky top-0 z-20 bg-white">
               <tr className="bg-linear-to-r from-gray-50 to-gray-100">
                 {orderedColumns.map((column, columnIndex) => {
@@ -599,7 +602,6 @@ export function IstTable({
               ))}
             </tbody>
           </table>
-
         </div>
 
         {/* Horizontal scroll hint tooltip — always at bottom of table, above footer */}
@@ -646,6 +648,3 @@ export function IstTable({
     </div>
   );
 }
-
-// Keep legacy export name for backwards compatibility with page.tsx
-export { IstTable as CustomTable };
