@@ -174,7 +174,6 @@ export function CustomTable({
     setShowScrollTooltip(false);
   };
 
-
   // Calculate column widths based on content
   const calculateWidths = () => {
     const widths: Record<string, number> = {};
@@ -429,7 +428,7 @@ export function CustomTable({
       className="mb-8 flex flex-col"
       style={{ height: "calc(88vh - 200px)" }}
     >
-      <div className="flex-1 flex flex-col overflow-hidden rounded-lg rounded-t-none border-2 border-gray-200">
+      <div className="flex-1 flex flex-col overflow-hidden rounded-lg border-2 border-gray-200">
         <div
           ref={tableContainerRef}
           className="flex-1 overflow-auto relative"
