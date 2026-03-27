@@ -600,31 +600,32 @@ export function IstTable({
             </tbody>
           </table>
 
-          {/* Horizontal scroll hint tooltip */}
-          {showScrollTooltip && (
-            <div className="sticky bottom-4 left-1/2 transform -translate-x-1/2 z-50 mx-auto w-fit pointer-events-none">
-              <div className="bg-blue-50 shadow-lg rounded-full border border-blue-200 p-2 px-3 pointer-events-auto">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
-                    <span className="font-semibold border border-blue-200 bg-white px-2 py-0.5 rounded-full text-blue-700 text-xs sm:text-sm whitespace-nowrap">
-                      Hint
-                    </span>
-                    <p className="text-xs sm:text-sm font-semibold text-blue-700">
-                      Scroll horizontally to see more columns
-                    </p>
-                  </div>
-                  <button
-                    onClick={handleDismissTooltip}
-                    className="text-gray-400 cursor-pointer hover:text-gray-600 transition-colors shrink-0"
-                    aria-label="Dismiss tooltip"
-                  >
-                    <CloseIcon />
-                  </button>
+        </div>
+
+        {/* Horizontal scroll hint tooltip — always at bottom of table, above footer */}
+        {showScrollTooltip && (
+          <div className="flex justify-center py-2 border-t border-gray-100 bg-white">
+            <div className="bg-blue-50 shadow-lg rounded-full border border-blue-200 p-2 px-3">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 items-start sm:items-center">
+                  <span className="font-semibold border border-blue-200 bg-white px-2 py-0.5 rounded-full text-blue-700 text-xs sm:text-sm whitespace-nowrap">
+                    Hint
+                  </span>
+                  <p className="text-xs sm:text-sm font-semibold text-blue-700">
+                    Scroll horizontally to see more columns
+                  </p>
                 </div>
+                <button
+                  onClick={handleDismissTooltip}
+                  className="text-gray-400 cursor-pointer hover:text-gray-600 transition-colors shrink-0"
+                  aria-label="Dismiss tooltip"
+                >
+                  <CloseIcon />
+                </button>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Footer bar */}
         <div className="flex justify-between items-center px-6 py-4 bg-gray-50 border-t border-gray-200">
