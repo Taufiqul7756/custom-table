@@ -385,6 +385,21 @@ export function IstTable({
   const isPinned = (columnKey: string) =>
     columnKey === "Del" || columnKey === "#" || pinnedColumns.has(columnKey);
 
+  // Reorder: Del, #, pinned content columns, unpinned content columns
+  // This ensures pinned columns are always in the visible left group
+  const orderedColumns = [
+    ...columns.filter((col) => col.key === "Del"),
+    ...columns.filter((col) => col.key === "#"),
+    ...columns.filter(
+      (col) =>
+        col.key !== "Del" && col.key !== "#" && pinnedColumns.has(col.key),
+    ),
+    ...columns.filter(
+      (col) =>
+        col.key !== "Del" && col.key !== "#" && !pinnedColumns.has(col.key),
+    ),
+  ];
+
   const getColumnStyle = (
     columnKey: string,
     columnIndex: number,
@@ -396,8 +411,8 @@ export function IstTable({
 
     let leftPosition = 0;
     for (let i = 0; i < columnIndex; i++) {
-      if (isPinned(columns[i].key))
-        leftPosition += columnWidths[columns[i].key] || 200;
+      if (isPinned(orderedColumns[i].key))
+        leftPosition += columnWidths[orderedColumns[i].key] || 200;
     }
     return {
       ...baseStyle,
@@ -424,10 +439,10 @@ export function IstTable({
           className="flex-1 overflow-auto relative"
           style={{ minWidth: "100%" }}
         >
-          <table className="border-collapse" style={{ width: "100%" }}>
+          <table className="border-collapse" style={{ tableLayout: "fixed", minWidth: "100%" }}>
             <thead className="sticky top-0 z-20 bg-white">
               <tr className="bg-linear-to-r from-gray-50 to-gray-100">
-                {columns.map((column, columnIndex) => {
+                {orderedColumns.map((column, columnIndex) => {
                   const pinned = isPinned(column.key);
                   const canTogglePin =
                     column.key !== "Del" && column.key !== "#";
@@ -486,7 +501,7 @@ export function IstTable({
                   key={row.id || rowIndex}
                   className="hover:bg-gray-50 transition-colors"
                 >
-                  {columns.map((column, columnIndex) => {
+                  {orderedColumns.map((column, columnIndex) => {
                     if (column.key === "Del") {
                       return (
                         <td
