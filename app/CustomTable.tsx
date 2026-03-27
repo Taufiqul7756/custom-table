@@ -208,14 +208,47 @@ export function IstTable({
     return widths;
   };
 
+  const applyWidths = () => {
+    const container = tableContainerRef.current;
+    if (!container) return;
+    const rawWidths = calculateWidths();
+    const fixedKeys = new Set(["#", "Del"]);
+    const totalFixed = Object.entries(rawWidths)
+      .filter(([k]) => fixedKeys.has(k))
+      .reduce((sum, [, w]) => sum + w, 0);
+    const contentEntries = Object.entries(rawWidths).filter(
+      ([k]) => !fixedKeys.has(k),
+    );
+    const totalContent = contentEntries.reduce((sum, [, w]) => sum + w, 0);
+    const available = container.clientWidth - totalFixed;
+    if (totalContent > 0 && totalContent < available) {
+      const scale = available / totalContent;
+      const scaled: Record<string, number> = { ...rawWidths };
+      contentEntries.forEach(([key, w]) => {
+        scaled[key] = w * scale;
+      });
+      setColumnWidths(scaled);
+    } else {
+      setColumnWidths(rawWidths);
+    }
+  };
+
   useEffect(() => {
-    const widths = calculateWidths();
-    const t = setTimeout(() => setColumnWidths(widths), 0);
+    const t = setTimeout(applyWidths, 0);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, columns]);
 
-  // Expand column width while typing
+  useEffect(() => {
+    const container = tableContainerRef.current;
+    if (!container) return;
+    const observer = new ResizeObserver(() => applyWidths());
+    observer.observe(container);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, columns]);
+
+  // Expand column width while typing (only grow, never shrink below scaled width)
   useEffect(() => {
     if (editingCell && editValue) {
       const canvas = document.createElement("canvas");
@@ -227,7 +260,10 @@ export function IstTable({
         () =>
           setColumnWidths((prev) => ({
             ...prev,
-            [editingCell.columnKey]: textWidth,
+            [editingCell.columnKey]: Math.max(
+              prev[editingCell.columnKey] || 0,
+              textWidth,
+            ),
           })),
         0,
       );
@@ -388,7 +424,7 @@ export function IstTable({
           className="flex-1 overflow-auto relative"
           style={{ minWidth: "100%" }}
         >
-          <table className="border-collapse" style={{ tableLayout: "auto" }}>
+          <table className="border-collapse" style={{ width: "100%" }}>
             <thead className="sticky top-0 z-20 bg-white">
               <tr className="bg-linear-to-r from-gray-50 to-gray-100">
                 {columns.map((column, columnIndex) => {

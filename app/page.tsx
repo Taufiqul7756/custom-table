@@ -87,8 +87,6 @@ export default function Home() {
     setIsCustom(true);
     setSavedJson(null);
     setShowJson(false);
-    setPanelOpen(false);
-    setInputText("");
   };
 
   const handleReset = () => {
@@ -119,6 +117,25 @@ export default function Home() {
   };
 
   const tableEntries = Object.entries(activeData.table_data);
+
+  const getDisplayJson = () => {
+    const result: Record<string, unknown> = {};
+    tableEntries.forEach(([tableKey, tableSchema]) => {
+      if (savedJson && savedJson[tableKey]) {
+        result[tableKey] = savedJson[tableKey];
+      } else {
+        const cleanedRows = tableSchema.rows.map((row) => {
+          const cleanRow: Record<string, unknown> = {};
+          tableSchema.columns.forEach((col) => {
+            cleanRow[col] = row[col];
+          });
+          return cleanRow;
+        });
+        result[tableKey] = { columns: tableSchema.columns, rows: cleanedRows };
+      }
+    });
+    return { table_data: result };
+  };
 
   const showJsonButton = (
     <button
@@ -373,7 +390,7 @@ export default function Home() {
         )}
 
         {/* JSON output */}
-        {savedJson && showJson && (
+        {showJson && (
           <div className="mt-4 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-gray-50">
               <div className="flex items-center gap-2">
@@ -397,7 +414,7 @@ export default function Home() {
                 <button
                   onClick={() =>
                     navigator.clipboard.writeText(
-                      JSON.stringify(savedJson, null, 2),
+                      JSON.stringify(getDisplayJson(), null, 2),
                     )
                   }
                   className="text-xs px-3 py-1.5 border border-gray-200 hover:bg-gray-100 text-gray-600 rounded-md font-medium cursor-pointer transition-colors"
@@ -405,18 +422,15 @@ export default function Home() {
                   Copy
                 </button>
                 <button
-                  onClick={() => {
-                    setSavedJson(null);
-                    setShowJson(false);
-                  }}
+                  onClick={() => setShowJson(false)}
                   className="text-xs px-3 py-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 border border-red-200 rounded-md font-medium cursor-pointer transition-colors"
                 >
-                  Clear
+                  Close
                 </button>
               </div>
             </div>
             <pre className="text-sm font-mono bg-white p-5 overflow-x-auto max-h-96 text-gray-700 leading-relaxed">
-              {JSON.stringify(savedJson, null, 2)}
+              {JSON.stringify(getDisplayJson(), null, 2)}
             </pre>
           </div>
         )}
